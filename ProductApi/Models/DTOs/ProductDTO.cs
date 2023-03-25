@@ -1,11 +1,10 @@
-﻿namespace ProductApi.Models
+﻿namespace ProductApi.Models.DTOs
 {
-    public class Product
+    public class ProductDTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Double Price { get; set; }
-
+        public double Price { get; set; }
     }
 }
