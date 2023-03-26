@@ -63,5 +63,52 @@ namespace ProductApi.Controllers
             };
             return Ok(newProductDTO);
         }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteProductById(Guid id)
+        {
+            var productToDelete = await productRepository.DeleteById(id);
+
+            if (productToDelete == null)
+            {
+                return NotFound();
+            }
+
+            var productDTO = new Models.DTOs.ProductDTO
+            {
+                Name= productToDelete.Name,
+                Description= productToDelete.Description,
+                Price = productToDelete.Price
+
+            };
+
+            return Ok(productDTO);
+        }
+
+        [HttpPut]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> UpdateProduct([FromRoute] Guid id, [FromBody] Models.DTOs.UploadProductDTO updateProductRequest)
+        {
+            var product = new Models.Domain.Product()
+            {
+                Name= updateProductRequest.Name,
+                Description= updateProductRequest.Description,
+                Price = updateProductRequest.Price
+            };
+
+            product = await productRepository.UpdateProduct(id, product);
+
+            if (product == null) { return NotFound(); }
+ 
+            var productDTO = new Models.DTOs.ProductDTO
+            {
+                Name= product.Name,
+                Description= product.Description,
+                Price = product.Price
+            };
+
+            return Ok(productDTO);
+        }
     }
 }
