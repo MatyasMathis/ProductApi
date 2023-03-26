@@ -14,14 +14,20 @@ namespace ProductApi.Repositories
 
         public async Task<Product> AddProduct(Product product)
         {
-            dbContext.AddAsync(product);
-            dbContext.SaveChangesAsync();
+            product.Id = Guid.NewGuid();
+           await dbContext.AddAsync(product);
+           await dbContext.SaveChangesAsync();
             return product;
         }
 
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
             return await dbContext.Products.ToListAsync();
+        }
+
+        public async Task<Product> GetById(Guid id)
+        {
+            return await dbContext.Products.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
